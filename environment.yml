@@ -1,0 +1,59 @@
+# Serendipity Finder Conda Environment
+# Author: Cazandra Aporbo, MS 2025
+# 
+# Usage:
+#   Create environment: conda env create -f environment.yml
+#   Activate: conda activate serendipity-finder
+#   Update: conda env update -f environment.yml --prune
+
+name: serendipity-finder
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Python version
+  - python=3.9
+  
+  # Core scientific packages
+  - numpy=1.24.*
+  - pandas=1.5.*
+  - scipy=1.10.*
+  
+  # Visualization
+  - matplotlib=3.7.*
+  - seaborn=0.12.*
+  
+  # Jupyter environment
+  - jupyter=1.0.*
+  - notebook=6.5.*
+  - ipywidgets=8.0.*
+  
+  # Performance optimization
+  - numba=0.57.*
+  - joblib=1.2.*
+  
+  # Data I/O
+  - openpyxl=3.1.*
+  - xlrd=2.0.*
+  
+  # Development tools
+  - black=23.0.*
+  - pylint=2.17.*
+  - pytest=7.3.*
+  - pytest-cov=4.0.*
+  
+  # Documentation
+  - sphinx=6.0.*
+  - sphinx_rtd_theme=1.2.*
+  
+  # Additional useful packages
+  - scikit-learn=1.2.*  # For additional ML algorithms
+  - plotly=5.14.*       # For interactive plots
+  - dash=2.10.*         # For web dashboards
+  
+  # Pip dependencies (if any packages not available in conda)
+  - pip
+  - pip:
+      # Add any pip-only packages here if needed
+      # - some-package==1.0.0

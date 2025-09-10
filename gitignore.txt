@@ -1,0 +1,133 @@
+# Serendipity Finder - Git Ignore
+# Author: Cazandra Aporbo, MS 2025
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.Python
+develop-eggs/
+.installed.cfg
+*.egg-info/
+MANIFEST
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv
+.ENV
+.env
+
+# Conda
+*.conda
+*.condarc
+
+# Testing
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+site/
+
+# Data files (keep examples)
+*.csv
+!examples/*.csv
+*.xlsx
+*.xls
+*.json
+!package.json
+!examples/*.json
+
+# Visualization outputs
+*.png
+!examples/*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+!assets/*.svg
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+
+# Distribution
+dist/
+build/
+*.tar.gz
+*.zip
+
+# Secrets (never commit these)
+*.pem
+*.key
+secrets.yaml
+credentials.json

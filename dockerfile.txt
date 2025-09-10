@@ -1,0 +1,40 @@
+# Serendipity Finder Docker Configuration
+# Author: Cazandra Aporbo, MS 2025
+# Email: becaziam@gmail.com
+
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    make \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements-minimal.txt .
+RUN pip install --no-cache-dir -r requirements-minimal.txt
+
+# Copy application files
+COPY serendipity_finder.py .
+COPY serendipity_visualization.html .
+COPY README.md .
+
+# Create output directory
+RUN mkdir -p /app/output
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV MPLBACKEND=Agg
+
+# Expose port for potential web interface
+EXPOSE 8080
+
+# Default command - run the demo
+CMD ["python", "serendipity_finder.py"]
+
+# Alternative: Run as a web service
+# CMD ["python", "-m", "http.server", "8080"]

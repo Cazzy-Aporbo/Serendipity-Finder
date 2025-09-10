@@ -1,0 +1,99 @@
+# Serendipity Finder - Makefile
+# Author: Cazandra Aporbo, MS 2025
+# Email: becaziam@gmail.com
+
+.PHONY: help install install-dev test clean run lint format docs
+
+# Default target - show help
+help:
+	@echo "Serendipity Finder - Development Commands"
+	@echo "========================================="
+	@echo ""
+	@echo "Installation:"
+	@echo "  make install       Install core dependencies"
+	@echo "  make install-dev   Install all development dependencies"
+	@echo "  make install-conda Create conda environment"
+	@echo ""
+	@echo "Development:"
+	@echo "  make run          Run the demo"
+	@echo "  make test         Run tests"
+	@echo "  make lint         Check code style"
+	@echo "  make format       Auto-format code"
+	@echo "  make clean        Remove build artifacts"
+	@echo ""
+	@echo "Documentation:"
+	@echo "  make docs         Generate documentation"
+	@echo "  make serve-docs   Serve documentation locally"
+
+# Install core dependencies
+install:
+	pip install -r requirements-minimal.txt
+	@echo "✓ Core dependencies installed"
+
+# Install all development dependencies
+install-dev:
+	pip install -r requirements.txt
+	pip install -e .
+	@echo "✓ Development environment ready"
+
+# Create conda environment
+install-conda:
+	conda env create -f environment.yml
+	@echo "✓ Conda environment 'serendipity-finder' created"
+	@echo "  Activate with: conda activate serendipity-finder"
+
+# Run the demonstration
+run:
+	python serendipity_finder.py
+
+# Run tests
+test:
+	pytest tests/ -v --cov=serendipity_finder --cov-report=html --cov-report=term
+
+# Lint code
+lint:
+	pylint serendipity_finder.py
+	black --check serendipity_finder.py
+
+# Format code
+format:
+	black serendipity_finder.py
+	@echo "✓ Code formatted"
+
+# Clean build artifacts
+clean:
+	rm -rf build/
+	rm -rf dist/
+	rm -rf *.egg-info
+	rm -rf __pycache__
+	rm -rf .pytest_cache
+	rm -rf .coverage
+	rm -rf htmlcov/
+	find . -type f -name "*.pyc" -delete
+	find . -type f -name "*.pyo" -delete
+	find . -type f -name "*.png" -delete
+	find . -type f -name "*.csv" -delete
+	@echo "✓ Cleaned build artifacts"
+
+# Generate documentation
+docs:
+	cd docs && sphinx-build -b html . _build
+	@echo "✓ Documentation built in docs/_build"
+
+# Serve documentation locally
+serve-docs: docs
+	cd docs/_build && python -m http.server 8000
+	@echo "Documentation available at http://localhost:8000"
+
+# Quick setup for new developers
+quickstart: install-dev
+	@echo ""
+	@echo "Welcome to Serendipity Finder!"
+	@echo "=============================="
+	@echo ""
+	@echo "Quick Start Guide:"
+	@echo "1. Run demo: make run"
+	@echo "2. Run tests: make test"
+	@echo "3. View HTML: open serendipity_visualization.html"
+	@echo ""
+	@echo "Contact: Cazandra Aporbo <becaziam@gmail.com>"
