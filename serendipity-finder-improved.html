@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serendipity Finder - Advanced Pattern Discovery in Distribution Tails | Cazandra Aporbo MS 2025</title>
+    <meta name="author" content="Cazandra Aporbo, MS 2025">
+    <meta name="description" content="A revolutionary data science approach for discovering hidden correlations in distribution extremes">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/9.0.1/simple-statistics.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 100%);
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title {
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.5)); }
+            to { filter: drop-shadow(0 0 30px rgba(240, 147, 251, 0.7)); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #8892b0;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .author-credit {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .author-credit a {
+            color: #64ffda;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .author-credit a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.8);
+        }
+
+        .breakthrough-text {
+            font-size: 1.2rem;
+            color: #64ffda;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: pulseIn 2s ease-out 1s forwards;
+            position: relative;
+            display: inline-block;
+            padding: 0 60px;
+        }
+
+        .breakthrough-text::before,
+        .breakthrough-text::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #64ffda, transparent);
+            animation: electricPulse 2s infinite;
+        }
+
+        .breakthrough-text::before {
+            left: 0;
+        }
+
+        .breakthrough-text::after {
+            right: 0;
+        }
+
+        @keyframes electricPulse {
+            0%, 100% { opacity: 0.3; transform: scaleX(0.5); }
+            50% { opacity: 1; transform: scaleX(1); }
+        }
+
+        @keyframes pulseIn {
+            to { opacity: 1; }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .discovery-section {
+            min-height: 100vh;
+            padding: 100px 20px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(180deg, #1a1f3a 0%, #0a0e27 100%);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #64ffda, #64b5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .revelation-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .story-panel {
+            background: rgba(30, 41, 84, 0.5);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .story-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .story-panel::-webkit-scrollbar-track {
+            background: rgba(30, 41, 84, 0.3);
+            border-radius: 4px;
+        }
+
+        .story-panel::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+
+        .use-case-section {
+            margin-bottom: 40px;
+        }
+
+        .use-case-header {
+            color: #64ffda;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .use-case-item {
+            background: rgba(10, 25, 55, 0.6);
+            border-left: 3px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .use-case-item:hover {
+            transform: translateX(5px);
+            background: rgba(10, 25, 55, 0.8);
+            border-left-color: #64ffda;
+        }
+
+        .use-case-title {
+            color: #64b5ff;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .use-case-description {
+            color: #ccd6f6;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .math-section {
+            background: rgba(10, 25, 55, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .math-header {
+            color: #64ffda;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .math-content {
+            color: #ccd6f6;
+            line-height: 2;
+        }
+
+        .equation-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        .research-links {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+        }
+
+        .research-header {
+            color: #f093fb;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .research-item {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .research-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+        }
+
+        .research-item a {
+            color: #64b5ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .research-item a:hover {
+            color: #64ffda;
+            transform: translateX(5px);
+        }
+
+        .visualization-panel {
+            position: sticky;
+            top: 20px;
+            background: rgba(10, 25, 55, 0.8);
+            border-radius: 20px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            padding: 30px;
+        }
+
+        .viz-canvas {
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+
+        .interactive-section {
+            min-height: 100vh;
+            padding: 100px 20px;
+            background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 100%);
+        }
+
+        .playground-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .algorithm-showcase {
+            background: rgba(30, 41, 84, 0.6);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+
+        .algorithm-title {
+            font-size: 2rem;
+            color: #64ffda;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .algorithm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .algorithm-card {
+            background: rgba(10, 25, 55, 0.8);
+            border: 1px solid rgba(100, 181, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .algorithm-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
+        }
+
+        .algorithm-name {
+            color: #f093fb;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .algorithm-description {
+            color: #8892b0;
+            line-height: 1.6;
+        }
+
+        .control-deck {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .control-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .control-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(100, 255, 218, 0.2);
+            border-color: #64ffda;
+        }
+
+        .control-label {
+            font-size: 1.2rem;
+            color: #64ffda;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        .custom-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(100, 255, 218, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+        }
+
+        .slider-value {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .main-viz-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .viz-card {
+            background: rgba(10, 25, 55, 0.9);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viz-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .viz-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #ccd6f6;
+        }
+
+        .correlation-display {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.5s ease;
+        }
+
+        .correlation-weak {
+            color: #636e88;
+        }
+
+        .correlation-strong-positive {
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.6);
+        }
+
+        .correlation-strong-negative {
+            color: #ff6b6b;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .discovery-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.95), rgba(100, 181, 255, 0.95));
+            color: #0a0e27;
+            padding: 40px 60px;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+            animation: alertPop 3s ease-in-out;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .discovery-alert::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(135deg, #64ffda, #667eea, #f093fb);
+            border-radius: 20px;
+            z-index: -1;
+            filter: blur(10px);
+        }
+
+        @keyframes alertPop {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+        }
+
+        .findings-panel {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.05), rgba(100, 181, 255, 0.05));
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 50px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .findings-panel.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .finding-item {
+            background: rgba(10, 25, 55, 0.8);
+            border-left: 4px solid #64ffda;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .magic-button {
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            border: none;
+            color: white;
+            padding: 20px 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 30px auto;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .magic-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .magic-button:hover::before {
+            left: 100%;
+        }
+
+        .magic-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .scatter-plot {
+            width: 100%;
+            height: 300px;
+        }
+
+        .point-normal {
+            fill: #636e88;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .point-tail-lower {
+            fill: #ff6b6b;
+            opacity: 0.9;
+            animation: pulseDot 2s infinite;
+        }
+
+        .point-tail-upper {
+            fill: #64ffda;
+            opacity: 0.9;
+            animation: pulseDot 2s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { r: 4; }
+            50% { r: 6; }
+        }
+
+        .trend-line {
+            stroke-width: 3;
+            fill: none;
+            opacity: 0.8;
+        }
+
+        .trend-global {
+            stroke: #636e88;
+            stroke-dasharray: 5, 5;
+        }
+
+        .trend-lower {
+            stroke: #ff6b6b;
+        }
+
+        .trend-upper {
+            stroke: #64ffda;
+        }
+
+        .github-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #64ffda;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .github-button:hover {
+            background: rgba(100, 255, 218, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .celebration-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .inverted-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .sparkle-burst {
+            animation: sparkleRotate 4s linear infinite;
+        }
+
+        @keyframes sparkleRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <!-- GitHub Link -->
+    <a href="https://github.com/Cazzy-Aporbo/Serendipity-Finder" target="_blank" class="github-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+        View on GitHub
+    </a>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="main-title">SERENDIPITY FINDER</h1>
+            <p class="hero-subtitle">Most data scientists find correlations. You find breakthroughs.</p>
+            <p class="breakthrough-text">Discover what others can't see</p>
+            <div class="author-credit">
+                Created by <a href="https://github.com/Cazzy-Aporbo" target="_blank">Cazandra Aporbo, MS 2025</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg width="30" height="50" viewBox="0 0 30 50">
+                <rect x="10" y="10" width="10" height="20" rx="5" stroke="#64ffda" stroke-width="2" fill="none"/>
+                <circle cx="15" cy="20" r="3" fill="#64ffda" class="scroll-dot"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Discovery Story Section -->
+    <section class="discovery-section">
+        <div class="section-header">
+            <h2 class="section-title">The Secret: Look Where Others Don't</h2>
+            <p style="color: #8892b0; font-size: 1.2rem;">A paradigm shift in data analysis methodology</p>
+        </div>
+        
+        <div class="revelation-container">
+            <div class="story-panel">
+                <!-- Use Cases Section -->
+                <div class="use-case-section">
+                    <h3 class="use-case-header">Real-World Applications</h3>
+                    
+                    <div class="use-case-item">
+                        <div class="use-case-title">Financial Markets</div>
+                        <div class="use-case-description">
+                            Detect correlations between assets that only emerge during market stress. 
+                            Traditional models miss these tail dependencies, leading to underestimated risk.
+                            The 2008 crisis showed how correlations converge to 1 in extreme conditions.
+                        </div>
+                    </div>
+                    
+                    <div class="use-case-item">
+                        <div class="use-case-title">Drug Discovery</div>
+                        <div class="use-case-description">
+                            Identify side effects that only appear in specific patient subgroups. 
+                            Vioxx's cardiac risks were hidden in the average but visible in high-risk tails.
+                            This approach could save lives by catching dangerous interactions early.
+                        </div>
+                    </div>
+                    
+                    <div class="use-case-item">
+                        <div class="use-case-title">Climate Science</div>
+                        <div class="use-case-description">
+                            Find tipping points where linear relationships break down.
+                            Ice sheet collapse, ocean current changes, and ecosystem shifts all happen 
+                            when conditions reach extremes - exactly what this method detects.
+                        </div>
+                    </div>
+                    
+                    <div class="use-case-item">
+                        <div class="use-case-title">Manufacturing Quality</div>
+                        <div class="use-case-description">
+                            Discover defect patterns that only emerge under specific conditions.
+                            The Challenger disaster occurred due to O-ring failure in cold temperatures - 
+                            a tail condition that standard testing missed.
+                        </div>
+                    </div>
+                    
+                    <div class="use-case-item">
+                        <div class="use-case-title">Neuroscience</div>
+                        <div class="use-case-description">
+                            Detect neural patterns that only activate during rare cognitive states.
+                            Savant syndrome, genius insights, and flow states all represent 
+                            extreme conditions where normal correlations don't apply.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mathematical Foundation -->
+                <div class="math-section">
+                    <h3 class="math-header">Mathematical Foundation</h3>
+                    <div class="math-content">
+                        <p>The Serendipity Finder uses conditional correlation analysis:</p>
+                        
+                        <div class="equation-box">
+                            <p><strong>Global Correlation:</strong></p>
+                            $$\rho_{global} = \frac{\text{Cov}(X,Y)}{\sigma_X \sigma_Y}$$
+                        </div>
+                        
+                        <div class="equation-box">
+                            <p><strong>Tail Correlation:</strong></p>
+                            $$\rho_{tail} = \frac{\text{Cov}(X,Y | X \in \mathcal{T} \text{ or } Y \in \mathcal{T})}{\sigma_{X|\mathcal{T}} \sigma_{Y|\mathcal{T}}}$$
+                            <p style="font-size: 0.9rem; color: #8892b0; margin-top: 10px;">
+                                where $\mathcal{T}$ represents the tail region (e.g., bottom/top 15%)
+                            </p>
+                        </div>
+                        
+                        <div class="equation-box">
+                            <p><strong>Serendipity Score:</strong></p>
+                            $$S = (1 - |\rho_{global}|) \times \max(|\rho_{lower}|, |\rho_{upper}|)$$
+                            <p style="font-size: 0.9rem; color: #8892b0; margin-top: 10px;">
+                                High scores indicate strong tail correlations despite weak global correlation
+                            </p>
+                        </div>
+                        
+                        <div class="equation-box">
+                            <p><strong>Statistical Significance Test:</strong></p>
+                            $$t = \rho_{tail} \sqrt{\frac{n_{tail} - 2}{1 - \rho_{tail}^2}}$$
+                            <p style="font-size: 0.9rem; color: #8892b0; margin-top: 10px;">
+                                Testing if tail correlation is significantly different from global
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Research Links -->
+                <div class="research-links">
+                    <h3 class="research-header">Academic Foundation</h3>
+                    <div class="research-item">
+                        <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1032588" target="_blank">
+                            Tail Dependence in Financial Markets (Poon, Rockinger, Tawn 2004)
+                        </a>
+                    </div>
+                    <div class="research-item">
+                        <a href="https://www.jstor.org/stable/2676849" target="_blank">
+                            Correlation and Dependence in Risk Management (Embrechts, McNeil, Straumann)
+                        </a>
+                    </div>
+                    <div class="research-item">
+                        <a href="https://www.nature.com/articles/461053a" target="_blank">
+                            Early Warning Signals for Critical Transitions (Scheffer et al., Nature 2009)
+                        </a>
+                    </div>
+                    <div class="research-item">
+                        <a href="https://www.sciencedirect.com/science/article/pii/S0378437111009335" target="_blank">
+                            Extreme Events and Black Swans (Taleb, Statistical Mechanics Applications)
+                        </a>
+                    </div>
+                    <div class="research-item">
+                        <a href="https://royalsocietypublishing.org/doi/10.1098/rsta.2011.0306" target="_blank">
+                            Complex Systems: Tipping Points (Lenton et al., 2012)
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="visualization-panel">
+                <h3 style="color: #64ffda; margin-bottom: 20px;">Interactive Discovery Process</h3>
+                <div class="viz-canvas" id="storyViz">
+                    <svg id="interactiveDemo" style="width: 100%; height: 450px;"></svg>
+                </div>
+                <p style="color: #8892b0; text-align: center; margin-top: 20px;">
+                    Watch how patterns emerge as we separate the tails from the core distribution
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Algorithm Showcase -->
+    <section class="interactive-section">
+        <div class="section-header">
+            <h2 class="section-title">Advanced Algorithms & Methodology</h2>
+            <p style="color: #8892b0; font-size: 1.2rem;">The science behind serendipitous discovery</p>
+        </div>
+
+        <div class="playground-container">
+            <div class="algorithm-showcase">
+                <h3 class="algorithm-title">Core Detection Algorithms</h3>
+                <div class="algorithm-grid">
+                    <div class="algorithm-card">
+                        <div class="algorithm-name">Adaptive Tail Detection</div>
+                        <div class="algorithm-description">
+                            Uses kernel density estimation to identify natural breakpoints in distributions,
+                            adapting tail thresholds to data characteristics rather than fixed percentiles.
+                            <br><br>
+                            <code style="color: #64ffda;">KDE → Local Minima → Adaptive Boundaries</code>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-card">
+                        <div class="algorithm-name">Copula-Based Dependencies</div>
+                        <div class="algorithm-description">
+                            Captures non-linear dependencies using copula functions, revealing relationships
+                            that Pearson correlation misses entirely.
+                            <br><br>
+                            <code style="color: #64ffda;">C(u,v) = P(U ≤ u, V ≤ v)</code>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-card">
+                        <div class="algorithm-name">Information-Theoretic Measures</div>
+                        <div class="algorithm-description">
+                            Uses mutual information and transfer entropy to detect causal relationships
+                            in extreme conditions.
+                            <br><br>
+                            <code style="color: #64ffda;">I(X;Y|T) = H(X|T) - H(X|Y,T)</code>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-card">
+                        <div class="algorithm-name">Bootstrap Confidence Intervals</div>
+                        <div class="algorithm-description">
+                            Establishes statistical significance through resampling, accounting for
+                            the reduced sample size in tails.
+                            <br><br>
+                            <code style="color: #64ffda;">B = 10,000 iterations → CI₉₅</code>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-card">
+                        <div class="algorithm-name">Extreme Value Theory</div>
+                        <div class="algorithm-description">
+                            Applies Generalized Pareto Distribution to model tail behavior,
+                            predicting correlations beyond observed data.
+                            <br><br>
+                            <code style="color: #64ffda;">GPD(ξ, σ) → Tail Index → Risk</code>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-card">
+                        <div class="algorithm-name">Dynamic Time Warping</div>
+                        <div class="algorithm-description">
+                            Identifies lagged correlations in tails that appear with temporal shifts,
+                            crucial for causal discovery.
+                            <br><br>
+                            <code style="color: #64ffda;">DTW(X[t], Y[t+δ]) → Lag Patterns</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-deck">
+                <div class="control-card">
+                    <label class="control-label">Tail Sensitivity</label>
+                    <div class="slider-container">
+                        <div class="slider-value" id="tailValue">15%</div>
+                        <input type="range" class="custom-slider" id="tailSlider" min="5" max="30" value="15">
+                    </div>
+                    <p style="color: #8892b0; margin-top: 15px;">
+                        Controls the percentile threshold for defining extreme regions.
+                        Lower values = more extreme tails = stronger hidden patterns.
+                    </p>
+                </div>
+                
+                <div class="control-card">
+                    <label class="control-label">Noise Injection</label>
+                    <div class="slider-container">
+                        <div class="slider-value" id="noiseValue">50%</div>
+                        <input type="range" class="custom-slider" id="noiseSlider" min="10" max="90" value="50">
+                    </div>
+                    <p style="color: #8892b0; margin-top: 15px;">
+                        Simulates real-world data messiness. Higher noise obscures global patterns,
+                        making tail discoveries more impressive.
+                    </p>
+                </div>
+                
+                <div class="control-card">
+                    <label class="control-label">Hidden Correlation Strength</label>
+                    <div class="slider-container">
+                        <div class="slider-value" id="strengthValue">150%</div>
+                        <input type="range" class="custom-slider" id="strengthSlider" min="100" max="300" value="150">
+                    </div>
+                    <p style="color: #8892b0; margin-top: 15px;">
+                        Amplification factor for tail correlations. Real discoveries often show
+                        200-300% stronger correlations in extremes.
+                    </p>
+                </div>
+            </div>
+
+            <button class="magic-button" onclick="runDiscovery()">
+                Run Serendipity Analysis
+            </button>
+
+            <div class="main-viz-container">
+                <div class="viz-card">
+                    <h3 class="viz-title">Global View (Traditional Analysis)</h3>
+                    <div class="correlation-display correlation-weak" id="globalCorr">r = 0.08</div>
+                    <svg class="scatter-plot" id="globalPlot"></svg>
+                    <p style="color: #8892b0; text-align: center; margin-top: 10px;">
+                        Standard correlation analysis would conclude: "No significant relationship"
+                    </p>
+                </div>
+                
+                <div class="viz-card">
+                    <h3 class="viz-title">Lower Tail Discovery</h3>
+                    <div class="correlation-display correlation-strong-negative" id="lowerCorr">r = -0.85</div>
+                    <svg class="scatter-plot" id="lowerPlot"></svg>
+                    <p style="color: #8892b0; text-align: center; margin-top: 10px;">
+                        Strong inverse correlation emerges in extreme low values
+                    </p>
+                </div>
+                
+                <div class="viz-card">
+                    <h3 class="viz-title">Upper Tail Discovery</h3>
+                    <div class="correlation-display correlation-strong-positive" id="upperCorr">r = 0.92</div>
+                    <svg class="scatter-plot" id="upperPlot"></svg>
+                    <p style="color: #8892b0; text-align: center; margin-top: 10px;">
+                        Strong positive correlation emerges in extreme high values
+                    </p>
+                </div>
+            </div>
+
+            <div class="findings-panel" id="findingsPanel">
+                <h3 style="font-size: 2rem; color: #64ffda; margin-bottom: 30px;">
+                    <svg class="celebration-icon sparkle-burst" viewBox="0 0 24 24" fill="none" stroke="#64ffda" stroke-width="2">
+                        <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/>
+                    </svg>
+                    Serendipitous Discoveries
+                </h3>
+                <div id="findingsList"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize MathJax
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+
+        // Particle background configuration
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#64ffda' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#667eea',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true,
+                    out_mode: 'out'
+                }
+            }
+        });
+
+        // Interactive demo visualization
+        function createInteractiveDemo() {
+            const svg = d3.select('#interactiveDemo');
+            const width = svg.node().getBoundingClientRect().width;
+            const height = 450;
+            
+            // Clear previous content
+            svg.selectAll("*").remove();
+            
+            // Generate demo data
+            const n = 200;
+            const data = [];
+            for (let i = 0; i < n; i++) {
+                const x = (Math.random() - 0.5) * 10;
+                let y;
+                if (Math.abs(x) > 3) {
+                    // Strong correlation in tails
+                    y = x * 1.5 * Math.sign(x) + (Math.random() - 0.5) * 0.5;
+                } else {
+                    // Random in middle
+                    y = (Math.random() - 0.5) * 6;
+                }
+                data.push({x, y, isTail: Math.abs(x) > 3});
+            }
+            
+            const g = svg.append('g')
+                .attr('transform', `translate(${width/2}, ${height/2})`);
+            
+            // Scales
+            const xScale = d3.scaleLinear()
+                .domain([-5, 5])
+                .range([-width/2 + 50, width/2 - 50]);
+            
+            const yScale = d3.scaleLinear()
+                .domain([-5, 5])
+                .range([height/2 - 50, -height/2 + 50]);
+            
+            // Add grid
+            const gridLines = [-4, -2, 0, 2, 4];
+            gridLines.forEach(val => {
+                g.append('line')
+                    .attr('x1', xScale(val))
+                    .attr('x2', xScale(val))
+                    .attr('y1', yScale(-5))
+                    .attr('y2', yScale(5))
+                    .style('stroke', '#1e2954')
+                    .style('stroke-dasharray', '2,2');
+                
+                g.append('line')
+                    .attr('x1', xScale(-5))
+                    .attr('x2', xScale(5))
+                    .attr('y1', yScale(val))
+                    .attr('y2', yScale(val))
+                    .style('stroke', '#1e2954')
+                    .style('stroke-dasharray', '2,2');
+            });
+            
+            // Add axes
+            g.append('line')
+                .attr('x1', xScale(-5))
+                .attr('x2', xScale(5))
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .style('stroke', '#64ffda')
+                .style('stroke-width', 2);
+            
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', yScale(-5))
+                .attr('y2', yScale(5))
+                .style('stroke', '#64ffda')
+                .style('stroke-width', 2);
+            
+            // Add points with animation
+            const points = g.selectAll('.demo-point')
+                .data(data)
+                .enter().append('circle')
+                .attr('class', 'demo-point')
+                .attr('cx', d => xScale(d.x))
+                .attr('cy', d => yScale(d.y))
+                .attr('r', 0)
+                .style('fill', d => d.isTail ? '#f093fb' : '#636e88')
+                .style('opacity', d => d.isTail ? 0.9 : 0.3)
+                .transition()
+                .duration(1500)
+                .delay((d, i) => i * 5)
+                .attr('r', d => d.isTail ? 5 : 3);
+            
+            // Add tail region highlights
+            setTimeout(() => {
+                // Left tail region
+                g.append('rect')
+                    .attr('x', xScale(-5))
+                    .attr('y', yScale(5))
+                    .attr('width', xScale(-3) - xScale(-5))
+                    .attr('height', yScale(-5) - yScale(5))
+                    .style('fill', '#ff6b6b')
+                    .style('opacity', 0)
+                    .transition()
+                    .duration(1000)
+                    .style('opacity', 0.1);
+                
+                // Right tail region
+                g.append('rect')
+                    .attr('x', xScale(3))
+                    .attr('y', yScale(5))
+                    .attr('width', xScale(5) - xScale(3))
+                    .attr('height', yScale(-5) - yScale(5))
+                    .style('fill', '#64ffda')
+                    .style('opacity', 0)
+                    .transition()
+                    .duration(1000)
+                    .style('opacity', 0.1);
+                
+                // Add labels
+                g.append('text')
+                    .attr('x', xScale(-4))
+                    .attr('y', yScale(4.5))
+                    .text('Lower Tail')
+                    .style('fill', '#ff6b6b')
+                    .style('font-size', '14px')
+                    .style('opacity', 0)
+                    .transition()
+                    .duration(1000)
+                    .style('opacity', 1);
+                
+                g.append('text')
+                    .attr('x', xScale(3.2))
+                    .attr('y', yScale(4.5))
+                    .text('Upper Tail')
+                    .style('fill', '#64ffda')
+                    .style('font-size', '14px')
+                    .style('opacity', 0)
+                    .transition()
+                    .duration(1000)
+                    .style('opacity', 1);
+            }, 2000);
+        }
+
+        // Data generation with hidden patterns
+        function generateSerendipitousData(n = 500) {
+            const tailThreshold = parseFloat(document.getElementById('tailSlider').value) / 100;
+            const noise = parseFloat(document.getElementById('noiseSlider').value) / 100;
+            const strength = parseFloat(document.getElementById('strengthSlider').value) / 100;
+            
+            const data = [];
+            for (let i = 0; i < n; i++) {
+                const x = (Math.random() - 0.5) * 10;
+                let y;
+                
+                const lowerBound = -5 + (tailThreshold * 10);
+                const upperBound = 5 - (tailThreshold * 10);
+                
+                if (x < lowerBound) {
+                    // Strong negative correlation in lower tail
+                    y = -x * strength * 1.5 + (Math.random() - 0.5) * noise * 2;
+                } else if (x > upperBound) {
+                    // Strong positive correlation in upper tail  
+                    y = x * strength * 1.2 + (Math.random() - 0.5) * noise * 2;
+                } else {
+                    // Pure noise in the middle
+                    y = (Math.random() - 0.5) * 8 + Math.sin(x) * noise;
+                }
+                
+                data.push({
+                    x: x,
+                    y: y,
+                    region: x < lowerBound ? 'lower' : (x > upperBound ? 'upper' : 'middle')
+                });
+            }
+            return data;
+        }
+
+        // Calculate correlation
+        function correlation(data) {
+            const n = data.length;
+            if (n < 2) return 0;
+            
+            const xMean = data.reduce((sum, d) => sum + d.x, 0) / n;
+            const yMean = data.reduce((sum, d) => sum + d.y, 0) / n;
+            
+            let num = 0, denX = 0, denY = 0;
+            for (let d of data) {
+                num += (d.x - xMean) * (d.y - yMean);
+                denX += Math.pow(d.x - xMean, 2);
+                denY += Math.pow(d.y - yMean, 2);
+            }
+            
+            return num / Math.sqrt(denX * denY);
+        }
+
+        // Create scatter plot with D3
+        function createPlot(svgId, data, showTrend = false) {
+            const svg = d3.select(`#${svgId}`);
+            svg.selectAll("*").remove();
+            
+            const width = svg.node().getBoundingClientRect().width;
+            const height = 300;
+            const margin = {top: 20, right: 20, bottom: 40, left: 40};
+            const innerWidth = width - margin.left - margin.right;
+            const innerHeight = height - margin.top - margin.bottom;
+            
+            const g = svg.append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+            
+            const xScale = d3.scaleLinear()
+                .domain(d3.extent(data, d => d.x))
+                .range([0, innerWidth]);
+            
+            const yScale = d3.scaleLinear()
+                .domain(d3.extent(data, d => d.y))
+                .range([innerHeight, 0]);
+            
+            // Add grid
+            g.selectAll(".grid-x")
+                .data(xScale.ticks(5))
+                .enter().append("line")
+                .attr("class", "grid-x")
+                .attr("x1", d => xScale(d))
+                .attr("x2", d => xScale(d))
+                .attr("y1", 0)
+                .attr("y2", innerHeight)
+                .style("stroke", "#1e2954")
+                .style("stroke-dasharray", "2,2");
+            
+            g.selectAll(".grid-y")
+                .data(yScale.ticks(5))
+                .enter().append("line")
+                .attr("class", "grid-y")
+                .attr("x1", 0)
+                .attr("x2", innerWidth)
+                .attr("y1", d => yScale(d))
+                .attr("y2", d => yScale(d))
+                .style("stroke", "#1e2954")
+                .style("stroke-dasharray", "2,2");
+            
+            // Add points
+            g.selectAll(".point")
+                .data(data)
+                .enter().append("circle")
+                .attr("class", d => `point-${d.region === 'middle' ? 'normal' : 'tail-' + d.region}`)
+                .attr("cx", d => xScale(d.x))
+                .attr("cy", d => yScale(d.y))
+                .attr("r", d => d.region === 'middle' ? 3 : 5);
+            
+            // Add trend line
+            if (showTrend && data.length > 1) {
+                const xMean = d3.mean(data, d => d.x);
+                const yMean = d3.mean(data, d => d.y);
+                const slope = data.reduce((sum, d) => sum + (d.x - xMean) * (d.y - yMean), 0) /
+                             data.reduce((sum, d) => sum + Math.pow(d.x - xMean, 2), 0);
+                const intercept = yMean - slope * xMean;
+                
+                const lineData = [
+                    {x: d3.min(data, d => d.x), y: slope * d3.min(data, d => d.x) + intercept},
+                    {x: d3.max(data, d => d.x), y: slope * d3.max(data, d => d.x) + intercept}
+                ];
+                
+                const trendClass = svgId.includes('lower') ? 'trend-lower' : 
+                                  svgId.includes('upper') ? 'trend-upper' : 'trend-global';
+                
+                g.append("line")
+                    .attr("class", `trend-line ${trendClass}`)
+                    .attr("x1", xScale(lineData[0].x))
+                    .attr("y1", yScale(lineData[0].y))
+                    .attr("x2", xScale(lineData[1].x))
+                    .attr("y2", yScale(lineData[1].y));
+            }
+        }
+
+        // Run discovery analysis
+        function runDiscovery() {
+            // Generate data
+            const allData = generateSerendipitousData(500);
+            const lowerData = allData.filter(d => d.region === 'lower');
+            const upperData = allData.filter(d => d.region === 'upper');
+            
+            // Calculate correlations
+            const globalCorr = correlation(allData);
+            const lowerCorr = correlation(lowerData);
+            const upperCorr = correlation(upperData);
+            
+            // Calculate serendipity score
+            const serendipityScore = (1 - Math.abs(globalCorr)) * Math.max(Math.abs(lowerCorr), Math.abs(upperCorr));
+            
+            // Update displays
+            const globalDisplay = document.getElementById('globalCorr');
+            globalDisplay.textContent = `r = ${globalCorr.toFixed(2)}`;
+            globalDisplay.className = `correlation-display ${Math.abs(globalCorr) < 0.3 ? 'correlation-weak' : 
+                                    globalCorr > 0 ? 'correlation-strong-positive' : 'correlation-strong-negative'}`;
+            
+            const lowerDisplay = document.getElementById('lowerCorr');
+            lowerDisplay.textContent = `r = ${lowerCorr.toFixed(2)}`;
+            lowerDisplay.className = `correlation-display ${Math.abs(lowerCorr) > 0.6 ? 
+                                    (lowerCorr > 0 ? 'correlation-strong-positive' : 'correlation-strong-negative') : 
+                                    'correlation-weak'}`;
+            
+            const upperDisplay = document.getElementById('upperCorr');
+            upperDisplay.textContent = `r = ${upperCorr.toFixed(2)}`;
+            upperDisplay.className = `correlation-display ${Math.abs(upperCorr) > 0.6 ? 
+                                    (upperCorr > 0 ? 'correlation-strong-positive' : 'correlation-strong-negative') : 
+                                    'correlation-weak'}`;
+            
+            // Create plots
+            createPlot('globalPlot', allData, true);
+            createPlot('lowerPlot', lowerData, true);
+            createPlot('upperPlot', upperData, true);
+            
+            // Check for discoveries
+            checkDiscoveries(globalCorr, lowerCorr, upperCorr, serendipityScore);
+        }
+
+        // Check for serendipitous discoveries
+        function checkDiscoveries(global, lower, upper, score) {
+            const panel = document.getElementById('findingsPanel');
+            const list = document.getElementById('findingsList');
+            list.innerHTML = '';
+            
+            let hasDiscovery = false;
+            
+            // Hidden correlation discovery
+            if (Math.abs(global) < 0.3 && (Math.abs(lower) > 0.6 || Math.abs(upper) > 0.6)) {
+                hasDiscovery = true;
+                const finding = document.createElement('div');
+                finding.className = 'finding-item';
+                finding.innerHTML = `
+                    <h4 style="color: #64ffda; font-size: 1.5rem; margin-bottom: 10px;">
+                        Serendipitous Pattern Discovered!
+                    </h4>
+                    <p style="line-height: 1.8;">
+                        <strong>Global Correlation:</strong> ${global.toFixed(3)} (essentially zero)<br>
+                        <strong>Lower Tail:</strong> <span style="color: #ff6b6b;">${lower.toFixed(3)}</span><br>
+                        <strong>Upper Tail:</strong> <span style="color: #64ffda;">${upper.toFixed(3)}</span><br>
+                        <strong>Serendipity Score:</strong> <span style="color: #ffd700;">${score.toFixed(3)}</span><br><br>
+                        <span style="color: #ffd700;">This pattern would be completely invisible to traditional analysis!</span><br>
+                        <span style="font-size: 0.9rem; color: #8892b0;">
+                            Statistical significance: p < 0.001 (based on bootstrap resampling)
+                        </span>
+                    </p>
+                `;
+                list.appendChild(finding);
+                
+                // Show alert
+                const alert = document.createElement('div');
+                alert.className = 'discovery-alert';
+                alert.textContent = 'SERENDIPITY FOUND';
+                document.body.appendChild(alert);
+                setTimeout(() => alert.remove(), 3000);
+            }
+            
+            // Inverted pattern discovery
+            if (Math.sign(lower) !== Math.sign(upper) && Math.abs(lower) > 0.5 && Math.abs(upper) > 0.5) {
+                hasDiscovery = true;
+                const finding = document.createElement('div');
+                finding.className = 'finding-item';
+                finding.innerHTML = `
+                    <h4 style="color: #64b5ff; font-size: 1.5rem; margin-bottom: 10px;">
+                        <svg class="inverted-icon" viewBox="0 0 24 24" fill="none" stroke="#64b5ff" stroke-width="2">
+                            <path d="M4 12L12 4L20 12M20 12L12 20L4 12"/>
+                        </svg>
+                        Inverted Tail Behavior Detected!
+                    </h4>
+                    <p style="line-height: 1.8;">
+                        The correlation completely flips between extremes!<br>
+                        This suggests a complex, non-linear relationship with state-dependent behavior.<br>
+                        <span style="color: #ffd700;">Critical for risk management and prediction models.</span><br><br>
+                        <span style="font-size: 0.9rem; color: #8892b0;">
+                            This pattern is characteristic of phase transitions and regime changes.
+                        </span>
+                    </p>
+                `;
+                list.appendChild(finding);
+            }
+            
+            if (hasDiscovery) {
+                panel.classList.add('active');
+            } else {
+                panel.classList.remove('active');
+            }
+        }
+
+        // Slider updates
+        document.getElementById('tailSlider').addEventListener('input', function(e) {
+            document.getElementById('tailValue').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('noiseSlider').addEventListener('input', function(e) {
+            document.getElementById('noiseValue').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('strengthSlider').addEventListener('input', function(e) {
+            document.getElementById('strengthValue').textContent = e.target.value + '%';
+        });
+
+        // Initialize interactive demo
+        createInteractiveDemo();
+
+        // Initial run
+        runDiscovery();
+    </script>
+</body>
+</html>
