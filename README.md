@@ -42,6 +42,15 @@
 
 ---
 
+# Serendipity-Finder
+
+<div align="center">
+
+### 🔮 [Experience Serendipity Live](https://htmlpreview.github.io/?https://github.com/Cazzy-Aporbo/Serendipity-Finder/blob/main/serendipity.html)
+*Click above to view the interactive visualization*
+
+</div>
+
 ## **Executive Summary**
 
 # Serendipity Finder
