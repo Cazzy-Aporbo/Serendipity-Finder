@@ -4,11 +4,3 @@
 testpaths = ["."]
 python_files = ["test_*.py"]
 addopts = "-v --tb=short"
-
-[tool.black]
-line-length = 100
-
-[tool.ruff]
-line-length = 100
-select = ["E", "F", "W"]
-ignore = ["E501"]
