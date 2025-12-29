@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  serendipity:
+    build: .
+    container_name: serendipity-finder
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python serendipity_finder.py
+
+  notebook:
+    build: .
+    container_name: serendipity-notebook
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+    profiles:
+      - dev
+
+  test:
+    build: .
+    container_name: serendipity-test
+    command: pytest -v --cov=serendipity_finder
+    profiles:
+      - test
