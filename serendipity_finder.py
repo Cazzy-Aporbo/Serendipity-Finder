@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
 Serendipity Finder: Discovering Hidden Patterns in Data Tails
-==============================================================
 
-A novel approach to data analysis that looks beyond global correlations
-to find surprising insights in the extremes of distributions.
 
-Author: Data Science Innovation Lab
+An approach to data analysis that looks beyond global correlations
+to find insights in the extremes of distributions.
+
 License: MIT
 """
 
@@ -310,7 +309,7 @@ class SerendipityFinder:
         
         # Strong tail correlations
         if self.discoveries['strong_tail_correlations']:
-            report.append("🔍 HIDDEN TAIL CORRELATIONS DISCOVERED:")
+            report.append("HIDDEN TAIL CORRELATIONS DISCOVERED:")
             report.append("-" * 40)
             for disc in sorted(self.discoveries['strong_tail_correlations'], 
                              key=lambda x: x.get('significance', 0), reverse=True)[:5]:
@@ -323,7 +322,7 @@ class SerendipityFinder:
         # Inverted patterns
         if self.discoveries['inverted_patterns']:
             report.append("\n")
-            report.append("🔄 INVERTED PATTERNS DISCOVERED:")
+            report.append("INVERTED PATTERNS DISCOVERED:")
             report.append("-" * 40)
             for disc in self.discoveries['inverted_patterns'][:3]:
                 report.append(f"\n  • {disc['feature1']} ↔ {disc['feature2']}")
@@ -355,14 +354,14 @@ def demo_serendipity_finder():
     This shows how the tool can uncover insights that traditional
     data analysis would miss entirely.
     """
-    print("🚀 Initializing Serendipity Finder...")
+    print("Initializing Serendipity Finder...")
     print("-" * 50)
     
     # Create finder instance
     finder = SerendipityFinder(tail_threshold=0.15, correlation_threshold=0.6)
     
     # Generate data with hidden patterns
-    print("📊 Generating synthetic data with hidden tail correlations...")
+    print("Generating synthetic data with hidden tail correlations...")
     data = finder.generate_serendipitous_data(
         n_samples=1000,
         n_features=10,
@@ -372,11 +371,11 @@ def demo_serendipity_finder():
     print(f"   Created dataset with {len(data)} samples and {len(data.columns)} features")
     
     # Find hidden correlations
-    print("\n🔍 Searching for serendipitous discoveries...")
+    print("\n Searching for serendipitous discoveries...")
     discoveries = finder.find_hidden_correlations()
     
     # Print summary
-    print(f"\n✨ DISCOVERIES FOUND:")
+    print(f"\n DISCOVERIES FOUND:")
     print(f"   • Hidden tail correlations: {len(discoveries['strong_tail_correlations'])}")
     print(f"   • Inverted patterns: {len(discoveries['inverted_patterns'])}")
     
@@ -386,7 +385,7 @@ def demo_serendipity_finder():
     # Visualize top discovery
     if discoveries['strong_tail_correlations']:
         top_discovery = discoveries['strong_tail_correlations'][0]
-        print(f"\n📈 Visualizing top discovery: {top_discovery['feature1']} vs {top_discovery['feature2']}")
+        print(f"\n Visualizing top discovery: {top_discovery['feature1']} vs {top_discovery['feature2']}")
         finder.visualize_discovery(
             top_discovery['feature1'], 
             top_discovery['feature2'],
@@ -404,7 +403,7 @@ if __name__ == "__main__":
     finder = demo_serendipity_finder()
     
     print("\n" + "=" * 60)
-    print("💡 KEY INSIGHT:")
+    print("KEY INSIGHT:")
     print("This approach mimics how real scientific breakthroughs happen.")
     print("Penicillin, market crashes, medical side-effects - all found")
     print("in the outliers, not the average. That's the power of")
